@@ -471,6 +471,11 @@ public class CalculatorGUI {
     }
 
 
+    /**
+     * This method is for scientific calculator part
+     *
+     * @return panel of scientific part
+     */
     private JPanel scientificPanel() {
 
         BorderLayout borderLayout = new BorderLayout(5, 5);
