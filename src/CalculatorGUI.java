@@ -28,16 +28,32 @@ public class CalculatorGUI {
         SwingUtilities.updateComponentTreeUI(calcFrame);
 
         calcFrame.setTitle("Calculator");
-        calcFrame.setSize(425, 650);
+        calcFrame.setSize(442, 695);
         calcFrame.getContentPane().setBackground(new Color(31,31,31));
-        calcFrame.setResizable(false);
+        calcFrame.setResizable(true);
         calcFrame.setLocationRelativeTo(null);
         calcFrame.setLayout(null);
         calcFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Initialize JTabbedPane
 
+        UIManager.put("TabbedPane.unselectedBackground", Color.red);
+        UIManager.put("TabbedPane.selected", Color.black);
+
         JTabbedPane tabs = new JTabbedPane();
+        tabs.setSize(425, 650);
+        tabs.setLocation(0, 0);
+        calcFrame.add(tabs);
+        
+        tabs.add("Standard", standardPanel());
+        tabs.setBackgroundAt(0, new Color(31, 31, 31));
+
+        calcFrame.setVisible(true);
+    }
+
+
+    private JPanel standardPanel() {
+
 
         BorderLayout borderLayout = new BorderLayout();
         borderLayout.setVgap(5);
@@ -46,7 +62,7 @@ public class CalculatorGUI {
         mainPanel.setBackground(new Color(31, 31, 31));
         mainPanel.setLocation(5, 5);
         mainPanel.setSize(410, 605);
-        calcFrame.add(mainPanel);
+
 
         JPanel keyboardPanel = new JPanel();
         keyboardPanel.setBackground(new Color(31 ,31 , 31));
@@ -220,33 +236,35 @@ public class CalculatorGUI {
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 2));
         keyboardPanel.add(button);
 
+        // center JPanel
+
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        centerPanel.setBackground(new Color(31, 31, 31));
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+
         // Text Area
 
         JTextPane display = new JTextPane();
         display.setEditable(false);
+        display.setSize(400, 300);
         display.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         display.setFont(new Font("Santa Fe LET", Font.PLAIN, 54));
-        display.setText("123456789-+%");
+        display.setText(" 0");
         display.setBackground(new Color(31, 31, 31));
         display.setForeground(Color.white);
-        StyledDocument style = display.getStyledDocument();
-        SimpleAttributeSet align= new SimpleAttributeSet();
-        StyleConstants.setAlignment(align, StyleConstants.);
-        style.setParagraphAttributes(0, style.getLength(), align, false);
-        mainPanel.add(display, BorderLayout.CENTER);
+        centerPanel.add(display, BorderLayout.SOUTH);
 
         // Label
 
         JLabel label = new JLabel();
-        label.setText("MY Calculator");
+        label.setText("Standard");
         label.setForeground(Color.white);
         label.setFont(new Font("Santa Fe LET", Font.BOLD, 40));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBackground(new Color(31, 31, 31));
         mainPanel.add(label, BorderLayout.NORTH);
 
-
-        calcFrame.setVisible(true);
+        return mainPanel;
     }
 
 }
