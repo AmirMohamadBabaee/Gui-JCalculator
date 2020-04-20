@@ -1,17 +1,23 @@
 import javax.swing.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CalculatorGUI {
 
     private JFrame calcFrame;
+    private List<JButton> standardButton;
+    private List<JButton> scientificButton;
 
     public CalculatorGUI() {
 
         // initialize JFrame
         calcFrame = new JFrame();
+        standardButton = new ArrayList<>();
+        scientificButton = new ArrayList<>();
 
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -28,9 +34,9 @@ public class CalculatorGUI {
         SwingUtilities.updateComponentTreeUI(calcFrame);
 
         calcFrame.setTitle("Calculator");
-        calcFrame.setSize(442, 695);
+        calcFrame.setSize(430, 685);
         calcFrame.getContentPane().setBackground(new Color(31,31,31));
-        calcFrame.setResizable(true);
+        calcFrame.setResizable(false);
         calcFrame.setLocationRelativeTo(null);
         calcFrame.setLayout(null);
         calcFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,6 +90,7 @@ public class CalculatorGUI {
 
         JButton button = new JButton(); // percent of number
         button.setText("%");
+        standardButton.add(button);
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -94,6 +101,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // square of number
         button.setText("x\u00B2");
+        standardButton.add(button);
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -104,6 +112,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // square root of number
         button.setText("\u221A");
+        standardButton.add(button);
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -114,12 +123,48 @@ public class CalculatorGUI {
 
         button = new JButton(); // Division sign
         button.setText("\u00F7");
+        standardButton.add(button);
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        JButton finalButton1 = button;
+        button.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton1.setBackground(new Color(0, 191, 255));
+                finalButton1.setForeground(Color.black);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton1.setBackground(new Color(13, 13, 13));
+                finalButton1.setForeground(Color.white);
+
+            }
+        });
         keyboardPanel.add(button);
 
         for(int i=0 ; i<12 ; i++) {
@@ -128,42 +173,151 @@ public class CalculatorGUI {
 
                 button = new JButton(); // Multiplication sign
                 button.setText("\u00D7");
+                standardButton.add(button);
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
                 button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                JButton finalButton2 = button;
+                button.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton2.setBackground(new Color(0, 191, 255));
+                        finalButton2.setForeground(Color.black);
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton2.setBackground(new Color(13, 13, 13));
+                        finalButton2.setForeground(Color.white);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i == 7){
 
-                button = new JButton(); // Multiplication sign
+                button = new JButton(); // negative sign
                 button.setText("-");
+                standardButton.add(button);
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
                 button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                JButton finalButton3 = button;
+                button.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton3.setBackground(new Color(0, 191, 255));
+                        finalButton3.setForeground(Color.black);
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton3.setBackground(new Color(13, 13, 13));
+                        finalButton3.setForeground(Color.white);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i == 11) {
 
-                button = new JButton(); // Multiplication sign
+                button = new JButton(); // plus sign
                 button.setText("+");
+                standardButton.add(button);
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
                 button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                JButton finalButton4 = button;
+                button.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton4.setBackground(new Color(0, 191, 255));
+                        finalButton4.setForeground(Color.black);
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton4.setBackground(new Color(13, 13, 13));
+                        finalButton4.setForeground(Color.white);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i < 3) {
 
                 button = new JButton();
                 button.setText("" + (7 + i));
+                standardButton.add(button);
                 button.setPreferredSize(new Dimension(50, 75));
                 button.setBackground(new Color(6, 6, 6));
                 button.setForeground(Color.WHITE);
@@ -177,6 +331,7 @@ public class CalculatorGUI {
 
                 button = new JButton();
                 button.setText("" + (i));
+                standardButton.add(button);
                 button.setPreferredSize(new Dimension(50, 75));
                 button.setBackground(new Color(6, 6, 6));
                 button.setForeground(Color.WHITE);
@@ -190,6 +345,7 @@ public class CalculatorGUI {
 
                 button = new JButton();
                 button.setText("" + (i - 7));
+                standardButton.add(button);
                 button.setPreferredSize(new Dimension(50, 75));
                 button.setBackground(new Color(6, 6, 6));
                 button.setForeground(Color.WHITE);
@@ -205,6 +361,7 @@ public class CalculatorGUI {
 
         JButton btn = new JButton();
         btn.setText("\u00B1");
+        standardButton.add(button);
         btn.setBackground(new Color(13, 13, 13));
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -215,6 +372,7 @@ public class CalculatorGUI {
 
         btn = new JButton();
         btn.setText("0");
+        standardButton.add(button);
         btn.setBackground(new Color(6, 6, 6));
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Santa Fe LET", Font.BOLD, 28));
@@ -225,6 +383,7 @@ public class CalculatorGUI {
 
         btn = new JButton();
         btn.setText(".");
+        standardButton.add(button);
         btn.setBackground(new Color(13, 13, 13));
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -235,6 +394,7 @@ public class CalculatorGUI {
 
         button = new JButton();
         button.setText("=");
+        standardButton.add(button);
         button.setPreferredSize(new Dimension(50, 75));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -242,6 +402,41 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        JButton finalButton5 = button;
+        button.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton5.setBackground(new Color(0, 191, 255));
+                finalButton5.setForeground(Color.black);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton5.setBackground(new Color(13, 13, 13));
+                finalButton5.setForeground(Color.white);
+
+            }
+        });
         keyboardPanel.add(button);
 
         // center JPanel
@@ -294,6 +489,7 @@ public class CalculatorGUI {
         // First row
         JButton button = new JButton(); // square number
         button.setText("x\u00B2");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -305,6 +501,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // x power of y
         button.setText("<html><div><p>x<sup>y</sup></p></div></html>");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -316,6 +513,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // sin or cos
         button.setText("<html><div><p>Sin<sub>Cos</sub></p></div></html>");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -327,6 +525,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // tan or cot
         button.setText("<html><div><p>Tan<sub>Cot</sub></p></div></html>");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -338,6 +537,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // Shift
         button.setText("Shift");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -345,6 +545,41 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        JButton finalButton6 = button;
+        button.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton6.setBackground(Color.red);
+                finalButton6.setForeground(Color.white);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton6.setBackground(new Color(13, 13, 13));
+                finalButton6.setForeground(Color.white);
+
+            }
+        });
         keyboardPanel.add(button);
 
 
@@ -352,6 +587,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // square root of number
         button.setText("\u221A");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -363,6 +599,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // ten power of number
         button.setText("<html><div><p>10<sup>x</sup></p></div></html>");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -374,6 +611,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // logarithm of number
         button.setText("log");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -385,6 +623,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // exponential of number
         button.setText("Exp");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -396,6 +635,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // Division sign
         button.setText("\u00F7");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -403,6 +643,41 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        JButton finalButton1 = button;
+        button.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton1.setBackground(new Color(0, 191, 255));
+                finalButton1.setForeground(Color.black);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton1.setBackground(new Color(13, 13, 13));
+                finalButton1.setForeground(Color.white);
+
+            }
+        });
         keyboardPanel.add(button);
 
 
@@ -412,6 +687,7 @@ public class CalculatorGUI {
 
                 button = new JButton(); // Multiplication sign
                 button.setText("\u00D7");
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -419,12 +695,48 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                JButton finalButton2 = button;
+                button.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton2.setBackground(new Color(0, 191, 255));
+                        finalButton2.setForeground(Color.black);
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton2.setBackground(new Color(13, 13, 13));
+                        finalButton2.setForeground(Color.white);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i == 9){
 
                 button = new JButton(); // negative sign
                 button.setText("-");
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -432,12 +744,48 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                JButton finalButton3 = button;
+                button.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton3.setBackground(new Color(0, 191, 255));
+                        finalButton3.setForeground(Color.black);
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton3.setBackground(new Color(13, 13, 13));
+                        finalButton3.setForeground(Color.white);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i == 14) {
 
                 button = new JButton(); // plus sign
                 button.setText("+");
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -445,12 +793,48 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                JButton finalButton4 = button;
+                button.addMouseListener(new MouseListener() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseReleased(MouseEvent e) {
+
+                    }
+
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton4.setBackground(new Color(0, 191, 255));
+                        finalButton4.setForeground(Color.black);
+
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+
+                        System.out.println(e.getLocationOnScreen().toString());
+                        finalButton4.setBackground(new Color(13, 13, 13));
+                        finalButton4.setForeground(Color.white);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i == 0) {
 
                 button = new JButton(); // Euler number
                 button.setText("e");
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -465,6 +849,7 @@ public class CalculatorGUI {
 
                 button = new JButton(); // pi number
                 button.setText("\u03C0");
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -479,6 +864,7 @@ public class CalculatorGUI {
 
                 button = new JButton(); // plus-negative sign
                 button.setText("\u00B1");
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -492,6 +878,7 @@ public class CalculatorGUI {
 
                 button = new JButton();
                 button.setText("" + (6 + i));
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setPreferredSize(new Dimension(50, 75));
                 button.setBackground(new Color(6, 6, 6));
@@ -506,6 +893,7 @@ public class CalculatorGUI {
 
                 button = new JButton();
                 button.setText("" + (i-2));
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setPreferredSize(new Dimension(50, 75));
                 button.setBackground(new Color(6, 6, 6));
@@ -520,6 +908,7 @@ public class CalculatorGUI {
 
                 button = new JButton();
                 button.setText("" + (i - 10));
+                scientificButton.add(button);
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(6, 6, 6));
                 button.setForeground(Color.WHITE);
@@ -537,6 +926,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // opened Parentheses
         button.setText("(");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -548,6 +938,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // closed Parentheses
         button.setText(")");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -559,6 +950,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // number 0
         button.setText("0");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(6, 6, 6));
         button.setForeground(Color.WHITE);
@@ -570,6 +962,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // dot
         button.setText(".");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -581,6 +974,7 @@ public class CalculatorGUI {
 
         button = new JButton(); // equal sign
         button.setText("=");
+        scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -588,6 +982,41 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        JButton finalButton5 = button;
+        button.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton5.setBackground(new Color(0, 191, 255));
+                finalButton5.setForeground(Color.black);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+                System.out.println(e.getLocationOnScreen().toString());
+                finalButton5.setBackground(new Color(13, 13, 13));
+                finalButton5.setForeground(Color.white);
+
+            }
+        });
         keyboardPanel.add(button);
 
 
