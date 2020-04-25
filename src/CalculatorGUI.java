@@ -88,8 +88,8 @@ public class CalculatorGUI {
 
         // Buttons
 
-        JButton button = new JButton(); // percent of number
-        button.setText("%");
+        JButton button = new JButton(); // AC button
+        button.setText("AC");
         standardButton.add(button);
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -492,8 +492,8 @@ public class CalculatorGUI {
         // Buttons
 
         // First row
-        JButton button = new JButton(); // square number
-        button.setText("x\u00B2");
+        JButton button = new JButton(); // AC button
+        button.setText("AC");
         scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
@@ -602,8 +602,8 @@ public class CalculatorGUI {
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
         keyboardPanel.add(button);
 
-        button = new JButton(); // ten power of number
-        button.setText("<html><div><p>10<sup>x</sup></p></div></html>");
+        button = new JButton(); // square of number
+        button.setText("x\u00B2");
         scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
