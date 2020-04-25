@@ -1,6 +1,10 @@
+import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
+
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -11,6 +15,7 @@ public class CalculatorGUI {
     private JFrame calcFrame;
     private List<JButton> standardButton;
     private List<JButton> scientificButton;
+    private String output = "";
 
     public CalculatorGUI() {
 
@@ -76,6 +81,24 @@ public class CalculatorGUI {
         mainPanel.setBackground(new Color(31, 31, 31));
         mainPanel.setLocation(5, 5);
         mainPanel.setSize(410, 605);
+
+
+        // Text Area
+
+        JTextArea display = new JTextArea();
+        display.setEditable(true);
+        display.setSize(410, 600);
+        display.setLocation(0, 0);
+        display.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        display.setFont(new Font("Santa Fe LET", Font.PLAIN, 54));
+        display.setText(output);
+        display.setBackground(new Color(31, 31, 31));
+        display.setForeground(Color.white);
+        display.setLineWrap(true);
+
+        JScrollPane scrollPane = new JScrollPane(display);
+        scrollPane.setPreferredSize(new Dimension(410, 150));
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(31, 31, 31), 2));
 
 
         JPanel keyboardPanel = new JPanel();
@@ -325,6 +348,16 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                final int number = 7+i;
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        output += number;
+                        display.setText(output);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i < 7) {
@@ -339,6 +372,16 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                final int number = i;
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        output += (number);
+                        display.setText(output);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i < 11) {
@@ -353,6 +396,16 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                final int number = i-7;
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        output += number;
+                        display.setText(output);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             }
@@ -379,6 +432,15 @@ public class CalculatorGUI {
         btn.setContentAreaFilled(false);
         btn.setOpaque(true);
         btn.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                output += 0;
+                display.setText(output);
+
+            }
+        });
         keyboardPanel.add(btn);
 
         btn = new JButton();
@@ -445,17 +507,8 @@ public class CalculatorGUI {
         centerPanel.setBackground(new Color(31, 31, 31));
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        // Text Area
-
-        JTextPane display = new JTextPane();
-        display.setEditable(false);
-        display.setSize(400, 300);
-        display.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        display.setFont(new Font("Santa Fe LET", Font.PLAIN, 54));
-        display.setText(" 0");
-        display.setBackground(new Color(31, 31, 31));
-        display.setForeground(Color.white);
-        centerPanel.add(display, BorderLayout.SOUTH);
+        centerPanel.add(scrollPane, BorderLayout.SOUTH);
+//        centerPanel.add(display, BorderLayout.SOUTH);
 
         // Label
 

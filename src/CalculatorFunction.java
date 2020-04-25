@@ -162,4 +162,26 @@ public class CalculatorFunction {
 
     }
 
+    /**
+     * this method calculate first number power of second number
+     *
+     * @param x first number
+     * @param y second number
+     * @return first number power of second number
+     */
+    public static double power(double x, double y) {
+
+        try{
+
+            return Math.pow(x, y);
+
+        } catch (ArithmeticException e) {
+
+            e.printStackTrace();
+            return Integer.MAX_VALUE;
+
+        }
+
+    }
+
 }
