@@ -11,5 +11,6 @@ public enum Process {
     SUBTRACT,
     MULTIPLY,
     DIVISION,
-    NOTHING
+    NOTHING,
+    POWER
 }

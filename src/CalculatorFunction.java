@@ -184,4 +184,19 @@ public class CalculatorFunction {
 
     }
 
+    /**
+     * This method calculate factorial of integer numbers
+     *
+     * @param num integer number
+     * @return factorial of param number
+     */
+    public static double factorial(int num) {
+
+        if(num < 2) {
+            return 1;
+        }
+        return num * factorial(num-1);
+
+    }
+
 }

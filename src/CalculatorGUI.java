@@ -1,13 +1,16 @@
+import com.sun.org.apache.bcel.internal.generic.CALOAD;
 import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
 
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.*;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CalculatorGUI {
 
@@ -17,10 +20,14 @@ public class CalculatorGUI {
     private String output = "";
     private String outputSci = "";
     private boolean first = false;
-    private boolean second = false;
     private double firstNumber;
     private double secondNumber;
     private Process process = Process.NOTHING;
+    private boolean firstSci = false;
+    private double firstNumberSci;
+    private double secondNumberSci;
+    private Process processSci = Process.NOTHING;
+    private boolean isShift = false;
 
     public CalculatorGUI() {
 
@@ -44,7 +51,7 @@ public class CalculatorGUI {
         SwingUtilities.updateComponentTreeUI(calcFrame);
 
         calcFrame.setTitle("Calculator");
-        calcFrame.setSize(430, 685);
+        calcFrame.setSize(430, 710);
         calcFrame.getContentPane().setBackground(new Color(31,31,31));
         calcFrame.setResizable(false);
         calcFrame.setLocationRelativeTo(null);
@@ -65,6 +72,7 @@ public class CalculatorGUI {
         tabs.add("Scientific", scientificPanel());
         tabs.setBackgroundAt(0, new Color(31, 31, 31));
 
+        calcFrame.setJMenuBar(menu(tabs));
         calcFrame.setVisible(true);
     }
 
@@ -560,7 +568,7 @@ public class CalculatorGUI {
 
                 if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    if(!output.startsWith("0") && !output.equals("")) {
+                    if(!output.equals("0") && !output.equals("")) {
                         if(output.startsWith("-")) {
                             output = output.replace("-", "");
                         } else {
@@ -752,12 +760,16 @@ public class CalculatorGUI {
     }
 
 
+
+
+
     /**
      * This method is for scientific calculator part
      *
      * @return panel of scientific part
      */
     private JPanel scientificPanel() {
+
 
 
         BorderLayout borderLayout = new BorderLayout(5, 5);
@@ -807,9 +819,26 @@ public class CalculatorGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                if(outputSci.length()>0){
+                if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    outputSci = outputSci.substring(0, outputSci.length()-1);
+                    if(outputSci.length()>0){
+
+                        if(outputSci.equals("Error")) {
+
+                            outputSci = "";
+
+                        } else {
+
+                            outputSci = outputSci.substring(0, outputSci.length()-1);
+
+                        }
+                        display.setText(outputSci);
+
+                    }
+
+                } else if(e.getButton() == MouseEvent.BUTTON3) {
+
+                    outputSci = "";
                     display.setText(outputSci);
 
                 }
@@ -824,10 +853,37 @@ public class CalculatorGUI {
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 23));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(!firstSci) {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            firstSci = true;
+                            outputSci = "";
+                            display.setText(outputSci);
+                            processSci = Process.POWER;
+                            System.out.println(firstNumberSci);
+
+                        } catch (NumberFormatException err) {
+                            err.printStackTrace();
+                        }
+
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // sin or cos
@@ -836,10 +892,78 @@ public class CalculatorGUI {
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 20));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 18));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(isShift && firstSci) {
+
+                        try {
+
+                            secondNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.cos(secondNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if (!isShift && firstSci) {
+
+                        try {
+
+                            secondNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.sin(secondNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if(isShift && !firstSci) {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.cos(firstNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if(!isShift && !firstSci) {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.sin(firstNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // tan or cot
@@ -848,11 +972,80 @@ public class CalculatorGUI {
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 20));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 18));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(isShift && firstSci) {
+
+                        try {
+
+                            secondNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + (1/Math.tan(secondNumberSci));
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if (!isShift && firstSci) {
+
+                        try {
+
+                            secondNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.tan(secondNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if(isShift && !firstSci) {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + (1/Math.tan(firstNumberSci));
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if(!isShift && !firstSci) {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.tan(firstNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
+
 
         button = new JButton(); // Shift
         button.setText("Shift");
@@ -860,24 +1053,24 @@ public class CalculatorGUI {
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 22));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
         JButton finalButton6 = button;
-        button.addMouseListener(new MouseListener() {
+        button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-            }
+                if(e.getButton() == MouseEvent.BUTTON1) {
 
-            @Override
-            public void mousePressed(MouseEvent e) {
+                    if(isShift) {
+                        isShift = false;
+                    } else {
+                        isShift = true;
+                    }
 
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
+                }
 
             }
 
@@ -893,9 +1086,11 @@ public class CalculatorGUI {
             @Override
             public void mouseExited(MouseEvent e) {
 
-                System.out.println(e.getLocationOnScreen().toString());
-                finalButton6.setBackground(new Color(13, 13, 13));
-                finalButton6.setForeground(Color.white);
+                if(!isShift) {
+                    System.out.println(e.getLocationOnScreen().toString());
+                    finalButton6.setBackground(new Color(13, 13, 13));
+                    finalButton6.setForeground(Color.white);
+                }
 
             }
         });
@@ -914,6 +1109,26 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    try {
+
+                        double number = Double.parseDouble(outputSci);
+                        outputSci = "" + CalculatorFunction.squareRoot(number);
+                        display.setText(outputSci);
+
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // square of number
@@ -926,18 +1141,106 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    try {
+
+                        double number = Double.parseDouble(outputSci);
+                        outputSci = "" + CalculatorFunction.square(number);
+                        display.setText(outputSci);
+
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // logarithm of number
-        button.setText("log");
+        button.setText("<html><div> <p>log2<sub>10</sub></p> </div></html>");
         scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 20));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(isShift && firstSci) {
+
+                        try {
+
+                            secondNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.log10(secondNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if (!isShift && firstSci) {
+
+                        try {
+
+                            secondNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.log(secondNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if(isShift && !firstSci) {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.log10(firstNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    } else if(!isShift && !firstSci) {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.log(firstNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+
+                            err.printStackTrace();
+
+                        }
+
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // exponential of number
@@ -946,10 +1249,46 @@ public class CalculatorGUI {
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 23));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(firstSci) {
+
+                        try {
+
+                            secondNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.exp(secondNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+                            err.printStackTrace();
+                        }
+
+                    } else {
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            outputSci = "" + Math.exp(firstNumberSci);
+                            display.setText(outputSci);
+
+                        } catch (NumberFormatException err) {
+                            err.printStackTrace();
+                        }
+
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // Division sign
@@ -963,22 +1302,32 @@ public class CalculatorGUI {
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
         JButton finalButton1 = button;
-        button.addMouseListener(new MouseListener() {
+        button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(!firstSci){
+
+                        try {
+
+                            firstNumberSci = Double.parseDouble(outputSci);
+                            firstSci = true;
+                            outputSci = "";
+                            display.setText(outputSci);
+                            processSci = Process.DIVISION;
+                            System.out.println(firstNumberSci);
+
+                        } catch(NumberFormatException err) {
+                            err.printStackTrace();
+                        }
+
+                    }
+
+                }
+
             }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
             @Override
             public void mouseEntered(MouseEvent e) {
 
@@ -1015,19 +1364,30 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
                 JButton finalButton2 = button;
-                button.addMouseListener(new MouseListener() {
+                button.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                    }
+                        if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    @Override
-                    public void mousePressed(MouseEvent e) {
+                            if(!firstSci) {
 
-                    }
+                                try {
 
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
+                                    firstNumberSci = Double.parseDouble(outputSci);
+                                    firstSci = true;
+                                    outputSci = "";
+                                    display.setText(outputSci);
+                                    processSci = Process.MULTIPLY;
+                                    System.out.println(firstNumberSci);
+
+                                } catch(NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
+
+                            }
+
+                        }
 
                     }
 
@@ -1064,19 +1424,31 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
                 JButton finalButton3 = button;
-                button.addMouseListener(new MouseListener() {
+                button.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                    }
+                        if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    @Override
-                    public void mousePressed(MouseEvent e) {
+                            if(!firstSci) {
 
-                    }
+                                try {
 
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
+                                    firstNumberSci = Double.parseDouble(outputSci);
+                                    firstSci = true;
+                                    outputSci = "";
+                                    display.setText(outputSci);
+                                    processSci = Process.SUBTRACT;
+                                    System.out.println(firstNumberSci);
+
+                                } catch(NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
 
                     }
 
@@ -1113,19 +1485,31 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
                 JButton finalButton4 = button;
-                button.addMouseListener(new MouseListener() {
+                button.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                    }
+                        if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    @Override
-                    public void mousePressed(MouseEvent e) {
+                            if(!firstSci) {
 
-                    }
+                                try {
 
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
+                                    firstNumberSci = Double.parseDouble(outputSci);
+                                    firstSci = true;
+                                    outputSci = "";
+                                    display.setText(outputSci);
+                                    processSci = Process.SUM;
+                                    System.out.println(firstNumberSci);
+
+                                } catch(NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
 
                     }
 
@@ -1162,6 +1546,19 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setToolTipText("EULER's Number");
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        if(e.getButton() == MouseEvent.BUTTON1) {
+
+                            outputSci = "" + Math.E;
+                            display.setText(outputSci);
+
+                        }
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i == 5) {
@@ -1177,6 +1574,19 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setToolTipText("PI number");
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        if(e.getButton() == MouseEvent.BUTTON1) {
+
+                            outputSci = "" + Math.PI;
+                            display.setText(outputSci);
+
+                        }
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i == 10) {
@@ -1191,6 +1601,25 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        if(e.getButton() == MouseEvent.BUTTON1) {
+
+                            if(!outputSci.equals("0") && !outputSci.equals("")) {
+                                if(outputSci.startsWith("-")) {
+                                    outputSci = outputSci.replace("-", "");
+                                } else {
+                                    outputSci = "-" + outputSci;
+                                }
+                            }
+                            display.setText(outputSci);
+
+                        }
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i < 4) {
@@ -1273,8 +1702,8 @@ public class CalculatorGUI {
 
         // Last row
 
-        button = new JButton(); // opened Parentheses
-        button.setText("(");
+        button = new JButton(); // factorial
+        button.setText("n!");
         scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
@@ -1283,18 +1712,63 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(firstSci) {
+
+                    try {
+
+                        secondNumberSci = Double.parseDouble(outputSci);
+                        outputSci = "" + CalculatorFunction.factorial((int)secondNumberSci);
+                        display.setText(outputSci);
+
+                    } catch (NumberFormatException err){
+                        err.printStackTrace();
+                    }
+
+                } else {
+
+                    try {
+
+                        firstNumberSci = Double.parseDouble(outputSci);
+                        outputSci = "" + CalculatorFunction.factorial((int)firstNumberSci);
+                        display.setText(outputSci);
+
+                    } catch (NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
-        button = new JButton(); // closed Parentheses
-        button.setText(")");
+        button = new JButton(); // Random number generator
+        button.setText("Rand");
         scientificButton.add(button);
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 20));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    outputSci = "" + Math.random();
+                    display.setText(outputSci);
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // number 0
@@ -1311,8 +1785,16 @@ public class CalculatorGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                outputSci += 0;
-                display.setText(outputSci);
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(!outputSci.equals("0")) {
+
+                        outputSci += 0;
+                        display.setText(outputSci);
+
+                    }
+
+                }
 
             }
         });
@@ -1328,6 +1810,29 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(outputSci.equals("") || outputSci.equals("0")) {
+
+                        outputSci = "0.";
+
+                    } else {
+
+                        if(!outputSci.contains(".")) {
+                            outputSci += ".";
+                        }
+
+                    }
+                    display.setText(outputSci);
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // equal sign
@@ -1341,19 +1846,72 @@ public class CalculatorGUI {
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
         JButton finalButton5 = button;
-        button.addMouseListener(new MouseListener() {
+        button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-            }
+                if(e.getButton() == MouseEvent.BUTTON1) {
 
-            @Override
-            public void mousePressed(MouseEvent e) {
+                    if(firstSci) {
 
-            }
+                        try {
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
+                            secondNumberSci = Double.parseDouble(outputSci);
+
+                            if(processSci == Process.SUM) {
+
+                                firstNumberSci = CalculatorFunction.sum(firstNumberSci, secondNumberSci);
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                firstSci = false;
+
+                            } else if(processSci == Process.SUBTRACT) {
+
+                                firstNumberSci = CalculatorFunction.subtract(firstNumberSci, secondNumberSci);
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                firstSci = false;
+
+                            } else if(processSci == Process.MULTIPLY) {
+
+                                firstNumberSci = CalculatorFunction.multiply(firstNumberSci, secondNumberSci);
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                firstSci = false;
+
+                            } else if(processSci == Process.DIVISION) {
+
+                                firstNumberSci = CalculatorFunction.division(firstNumberSci, secondNumberSci);
+                                if((int)firstNumberSci == Integer.MAX_VALUE) {
+                                    outputSci = "Error";
+                                    display.setText(outputSci);
+                                } else {
+                                    outputSci = "" + firstNumberSci;
+                                    display.setText(outputSci);
+                                }
+
+                                firstSci = false;
+
+                            } else if(processSci == Process.POWER) {
+
+                                firstNumberSci = CalculatorFunction.power(firstNumberSci, secondNumberSci);
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                firstSci = false;
+
+                            }
+
+                        } catch (NumberFormatException err) {
+                            err.printStackTrace();
+                        }
+
+                    }
+
+                }
 
             }
 
@@ -1395,6 +1953,47 @@ public class CalculatorGUI {
 
         return mainPanel;
 
+    }
+
+
+    private JMenuBar menu(JTabbedPane tabs) {
+
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menu = new JMenu("Menu");
+        menu.setMnemonic(KeyEvent.VK_M);
+
+        JMenuItem copyScreen = new JMenuItem("Copy Screen", KeyEvent.VK_C);
+        copyScreen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK));
+        System.out.println(tabs.getSelectedIndex());
+        copyScreen.addActionListener(e -> {
+            if(tabs.getSelectedIndex() == 0) {
+
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(new StringSelection(output), null);
+
+            } else if(tabs.getSelectedIndex() == 1) {
+
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(new StringSelection(outputSci), null);
+
+            }
+        });
+
+
+        JMenuItem exit = new JMenuItem("Exit", KeyEvent.VK_E);
+        exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_MASK));
+        exit.addActionListener(e -> {
+            calcFrame.dispose();
+            System.exit(0);
+        });
+
+        menu.add(copyScreen);
+        menu.add(exit);
+
+        menuBar.add(menu);
+
+        return menuBar;
     }
 
 }
