@@ -3,7 +3,6 @@ import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,6 +15,12 @@ public class CalculatorGUI {
     private List<JButton> standardButton;
     private List<JButton> scientificButton;
     private String output = "";
+    private String outputSci = "";
+    private boolean first = false;
+    private boolean second = false;
+    private double firstNumber;
+    private double secondNumber;
+    private Process process = Process.NOTHING;
 
     public CalculatorGUI() {
 
@@ -86,12 +91,11 @@ public class CalculatorGUI {
         // Text Area
 
         JTextArea display = new JTextArea();
-        display.setEditable(true);
+        display.setEditable(false);
         display.setSize(410, 600);
         display.setLocation(0, 0);
-        display.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         display.setFont(new Font("Santa Fe LET", Font.PLAIN, 54));
-        display.setText(output);
+        display.setText(" 0");
         display.setBackground(new Color(31, 31, 31));
         display.setForeground(Color.white);
         display.setLineWrap(true);
@@ -120,6 +124,36 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(output.length()>0){
+
+                        if(output.equals("Error")) {
+
+                            output = "";
+
+                        } else {
+
+                            output = output.substring(0, output.length()-1);
+
+                        }
+                        display.setText(output);
+
+                    }
+
+                } else if(e.getButton() == MouseEvent.BUTTON3) {
+
+                    output = "";
+                    display.setText(output);
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // square of number
@@ -131,6 +165,26 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    try {
+
+                        double number = Integer.parseInt(output);
+                        output = "" + CalculatorFunction.square(number);
+                        display.setText(output);
+
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // square root of number
@@ -142,6 +196,26 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    try {
+
+                        double number = Integer.parseInt(output);
+                        output = "" + CalculatorFunction.squareRoot(number);
+                        display.setText(output);
+
+                    } catch (Exception err) {
+                        err.printStackTrace();
+                    }
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // Division sign
@@ -154,19 +228,31 @@ public class CalculatorGUI {
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
         JButton finalButton1 = button;
-        button.addMouseListener(new MouseListener() {
+        button.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseClicked(MouseEvent e) {
 
-            }
+                if(e.getButton() == MouseEvent.BUTTON1) {
 
-            @Override
-            public void mousePressed(MouseEvent e) {
+                    if(!first){
 
-            }
+                        try {
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
+                            firstNumber = Double.parseDouble(output);
+                            first = true;
+                            output = "";
+                            display.setText(output);
+                            process = Process.DIVISION;
+                            System.out.println(firstNumber);
+
+                        } catch(NumberFormatException err) {
+                            err.printStackTrace();
+                        }
+
+                    }
+
+                }
 
             }
 
@@ -204,22 +290,33 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
                 JButton finalButton2 = button;
-                button.addMouseListener(new MouseListener() {
+                button.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
+                        if(e.getButton() == MouseEvent.BUTTON1) {
+
+                            if(!first) {
+
+                                try {
+
+                                    firstNumber = Double.parseDouble(output);
+                                    first = true;
+                                    output = "";
+                                    display.setText(output);
+                                    process = Process.MULTIPLY;
+                                    System.out.println(firstNumber);
+
+                                } catch(NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
+
                     }
-
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-
-                    }
-
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-
-                    }
-
                     @Override
                     public void mouseEntered(MouseEvent e) {
 
@@ -252,19 +349,31 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
                 JButton finalButton3 = button;
-                button.addMouseListener(new MouseListener() {
+                button.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                    }
+                        if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    @Override
-                    public void mousePressed(MouseEvent e) {
+                            if(!first) {
 
-                    }
+                                try {
 
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
+                                    firstNumber = Double.parseDouble(output);
+                                    first = true;
+                                    output = "";
+                                    display.setText(output);
+                                    process = Process.SUBTRACT;
+                                    System.out.println(firstNumber);
+
+                                } catch(NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
 
                     }
 
@@ -300,19 +409,31 @@ public class CalculatorGUI {
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
                 JButton finalButton4 = button;
-                button.addMouseListener(new MouseListener() {
+                button.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                    }
+                        if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    @Override
-                    public void mousePressed(MouseEvent e) {
+                            if(!first) {
 
-                    }
+                                try {
 
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
+                                    firstNumber = Double.parseDouble(output);
+                                    first = true;
+                                    output = "";
+                                    display.setText(output);
+                                    process = Process.SUM;
+                                    System.out.println(firstNumber);
+
+                                } catch(NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
+
+
+                            }
+
+                        }
 
                     }
 
@@ -353,8 +474,12 @@ public class CalculatorGUI {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                        output += number;
-                        display.setText(output);
+                        if(e.getButton() == MouseEvent.BUTTON1) {
+
+                            output += number;
+                            display.setText(output);
+
+                        }
 
                     }
                 });
@@ -377,8 +502,12 @@ public class CalculatorGUI {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                        output += (number);
-                        display.setText(output);
+                        if(e.getButton() == MouseEvent.BUTTON1) {
+
+                            output += (number);
+                            display.setText(output);
+
+                        }
 
                     }
                 });
@@ -401,8 +530,12 @@ public class CalculatorGUI {
                     @Override
                     public void mouseClicked(MouseEvent e) {
 
-                        output += number;
-                        display.setText(output);
+                        if(e.getButton() == MouseEvent.BUTTON1) {
+
+                            output += number;
+                            display.setText(output);
+
+                        }
 
                     }
                 });
@@ -421,6 +554,25 @@ public class CalculatorGUI {
         btn.setContentAreaFilled(false);
         btn.setOpaque(true);
         btn.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(!output.startsWith("0") && !output.equals("")) {
+                        if(output.startsWith("-")) {
+                            output = output.replace("-", "");
+                        } else {
+                            output = "-" + output;
+                        }
+                    }
+                    display.setText(output);
+
+                }
+
+            }
+        });
         keyboardPanel.add(btn);
 
         btn = new JButton();
@@ -436,8 +588,16 @@ public class CalculatorGUI {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                output += 0;
-                display.setText(output);
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(!output.equals("0")) {
+
+                        output += 0;
+                        display.setText(output);
+
+                    }
+
+                }
 
             }
         });
@@ -452,6 +612,29 @@ public class CalculatorGUI {
         btn.setContentAreaFilled(false);
         btn.setOpaque(true);
         btn.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(e.getButton() == MouseEvent.BUTTON1) {
+
+                    if(output.equals("") || output.equals("0")) {
+
+                        output = "0.";
+
+                    } else {
+
+                        if(!output.contains(".")) {
+                            output += ".";
+                        }
+
+                    }
+                    display.setText(output);
+
+                }
+
+            }
+        });
         keyboardPanel.add(btn);
 
         button = new JButton();
@@ -465,19 +648,64 @@ public class CalculatorGUI {
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
         JButton finalButton5 = button;
-        button.addMouseListener(new MouseListener() {
+        button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-            }
+                if(e.getButton() == MouseEvent.BUTTON1) {
 
-            @Override
-            public void mousePressed(MouseEvent e) {
+                    if(first) {
 
-            }
+                        try {
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
+                            secondNumber = Double.parseDouble(output);
+
+                            if(process == Process.SUM) {
+
+                                firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                                output = "" + firstNumber;
+                                display.setText(output);
+
+                                first = false;
+
+                            } else if(process == Process.SUBTRACT) {
+
+                                firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                                output = "" + firstNumber;
+                                display.setText(output);
+
+                                first = false;
+
+                            } else if(process == Process.MULTIPLY) {
+
+                                firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                                output = "" + firstNumber;
+                                display.setText(output);
+
+                                first = false;
+
+                            } else if(process == Process.DIVISION) {
+
+                                firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                                if((int)firstNumber == Integer.MAX_VALUE) {
+                                    output = "Error";
+                                    display.setText(output);
+                                } else {
+                                    output = "" + firstNumber;
+                                    display.setText(output);
+                                }
+
+                                first = false;
+
+                            }
+
+                        } catch (NumberFormatException err) {
+                            err.printStackTrace();
+                        }
+
+                    }
+
+                }
 
             }
 
@@ -531,6 +759,7 @@ public class CalculatorGUI {
      */
     private JPanel scientificPanel() {
 
+
         BorderLayout borderLayout = new BorderLayout(5, 5);
         JPanel mainPanel = new JPanel(borderLayout);
         mainPanel.setBackground(new Color(31, 31, 31));
@@ -541,6 +770,25 @@ public class CalculatorGUI {
         keyboardPanel.setBackground(new Color(31, 31, 31));
 
         mainPanel.add(keyboardPanel, BorderLayout.SOUTH);
+
+
+        // Text Area
+
+        JTextArea display = new JTextArea();
+        display.setEditable(false);
+        display.setSize(400, 300);
+        display.setFont(new Font("Santa Fe LET", Font.PLAIN, 54));
+        display.setText(" 0");
+        display.setBackground(new Color(31, 31, 31));
+        display.setForeground(Color.white);
+        display.setLineWrap(true);
+
+
+        JScrollPane scrollPane = new JScrollPane(display);
+        scrollPane.setPreferredSize(new Dimension(410, 120));
+//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(31, 31, 31), 2));
+
 
         // Buttons
 
@@ -555,6 +803,19 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                if(outputSci.length()>0){
+
+                    outputSci = outputSci.substring(0, outputSci.length()-1);
+                    display.setText(outputSci);
+
+                }
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // x power of y
@@ -945,6 +1206,16 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                final int number = 6 + i;
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        outputSci += number;
+                        display.setText(outputSci);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i < 9) {
@@ -960,6 +1231,16 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                final int number = i - 2;
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        outputSci += number;
+                        display.setText(outputSci);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             } else if (i < 14) {
@@ -974,6 +1255,16 @@ public class CalculatorGUI {
                 button.setContentAreaFilled(false);
                 button.setOpaque(true);
                 button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+                final int number = i - 10;
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+
+                        outputSci += number;
+                        display.setText(outputSci);
+
+                    }
+                });
                 keyboardPanel.add(button);
 
             }
@@ -1016,6 +1307,15 @@ public class CalculatorGUI {
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                outputSci += 0;
+                display.setText(outputSci);
+
+            }
+        });
         keyboardPanel.add(button);
 
         button = new JButton(); // dot
@@ -1091,17 +1391,7 @@ public class CalculatorGUI {
         centerPanel.setBackground(new Color(31, 31, 31));
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
-        // Text Area
-
-        JTextPane display = new JTextPane();
-        display.setEditable(false);
-        display.setSize(400, 300);
-        display.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        display.setFont(new Font("Santa Fe LET", Font.PLAIN, 54));
-        display.setText(" 0");
-        display.setBackground(new Color(31, 31, 31));
-        display.setForeground(Color.white);
-        centerPanel.add(display, BorderLayout.SOUTH);
+        centerPanel.add(scrollPane, BorderLayout.SOUTH);
 
         return mainPanel;
 
