@@ -99,6 +99,7 @@ public class CalculatorGUI {
         // Text Area
 
         JTextArea display = new JTextArea();
+        display.setToolTipText("Screen of Standard Calculator");
         display.setEditable(false);
         display.setSize(410, 600);
         display.setLocation(0, 0);
@@ -107,6 +108,162 @@ public class CalculatorGUI {
         display.setBackground(new Color(31, 31, 31));
         display.setForeground(Color.white);
         display.setLineWrap(true);
+
+        display.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+                if(e.getKeyChar() == '1' || e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
+                    output += "1";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '2' || e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+                    output += "2";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '3' || e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
+                    output += "3";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '4' || e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
+                    output += "4";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '5' || e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
+                    output += "5";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '6' || e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
+                    output += "6";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '7' || e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
+                    output += "7";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '8' || e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
+                    output += "8";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '9' || e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
+                    output += "9";
+                    display.setText(output);
+                } else if(e.getKeyChar() == '0' || e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
+                    if(!output.equals("0")) {
+                        output += "0";
+                        display.setText(output);
+                    }
+                } else if(e.getKeyChar() == '\b' || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    if(output.length()>0) {
+                        output = output.substring(0, output.length()-1);
+                        display.setText(output);
+                    }
+                } else if(e.getKeyChar() == '/' && !first) { // division for keyboard
+
+                    try {
+
+                        firstNumber = Double.parseDouble(output);
+                        first = true;
+                        output = "";
+                        display.setText(output);
+                        process = Process.DIVISION;
+                        System.out.println(firstNumber);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '-' && !first) { // subtraction for keyboard
+
+                    try {
+
+                        firstNumber = Double.parseDouble(output);
+                        first = true;
+                        output = "";
+                        display.setText(output);
+                        process = Process.SUBTRACT;
+                        System.out.println(firstNumber);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '+' && !first) { // summation for keyboard
+
+                    try {
+
+                        firstNumber = Double.parseDouble(output);
+                        first = true;
+                        output = "";
+                        display.setText(output);
+                        process = Process.SUM;
+                        System.out.println(firstNumber);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '*' && !first) { // multiplication for keyboard
+
+                    try {
+
+                        firstNumber = Double.parseDouble(output);
+                        first = true;
+                        output = "";
+                        display.setText(output);
+                        process = Process.MULTIPLY;
+                        System.out.println(firstNumber);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if((e.getKeyChar() == '=' || e.getKeyChar() == '\n') && first) {
+
+                    try {
+
+                        secondNumber = Double.parseDouble(output);
+
+                        if(process == Process.SUM) {
+
+                            firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+                            first = false;
+
+                        } else if(process == Process.SUBTRACT) {
+
+                            firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+                            first = false;
+
+                        } else if(process == Process.MULTIPLY) {
+
+                            firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+                            first = false;
+
+                        } else if(process == Process.DIVISION) {
+
+                            firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                            if((int)firstNumber == Integer.MAX_VALUE) {
+                                output = "Error";
+                                display.setText(output);
+                            } else {
+                                output = "" + firstNumber;
+                                display.setText(output);
+                            }
+
+                            first = false;
+
+                        }
+
+                    } catch (NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                }
+
+
+            }
+        });
 
         JScrollPane scrollPane = new JScrollPane(display);
         scrollPane.setPreferredSize(new Dimension(410, 150));
@@ -126,6 +283,7 @@ public class CalculatorGUI {
         JButton button = new JButton(); // AC button
         button.setText("AC");
         standardButton.add(button);
+        button.setToolTipText("Each Left click remove char by char and Each Right click remove all of chars");
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -167,6 +325,7 @@ public class CalculatorGUI {
         button = new JButton(); // square of number
         button.setText("x\u00B2");
         standardButton.add(button);
+        button.setToolTipText("Square of expected number");
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -198,6 +357,7 @@ public class CalculatorGUI {
         button = new JButton(); // square root of number
         button.setText("\u221A");
         standardButton.add(button);
+        button.setToolTipText("Square root of expected number");
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -229,6 +389,7 @@ public class CalculatorGUI {
         button = new JButton(); // Division sign
         button.setText("\u00F7");
         standardButton.add(button);
+        button.setToolTipText("Division");
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -291,6 +452,7 @@ public class CalculatorGUI {
                 button = new JButton(); // Multiplication sign
                 button.setText("\u00D7");
                 standardButton.add(button);
+                button.setToolTipText("Multiplication");
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
                 button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -350,6 +512,7 @@ public class CalculatorGUI {
                 button = new JButton(); // negative sign
                 button.setText("-");
                 standardButton.add(button);
+                button.setToolTipText("Subtraction");
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
                 button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -410,6 +573,7 @@ public class CalculatorGUI {
                 button = new JButton(); // plus sign
                 button.setText("+");
                 standardButton.add(button);
+                button.setToolTipText("Summation");
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
                 button.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -556,6 +720,7 @@ public class CalculatorGUI {
         JButton btn = new JButton();
         btn.setText("\u00B1");
         standardButton.add(button);
+        btn.setToolTipText("Change number sign");
         btn.setBackground(new Color(13, 13, 13));
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -614,6 +779,7 @@ public class CalculatorGUI {
         btn = new JButton();
         btn.setText(".");
         standardButton.add(button);
+        btn.setToolTipText("Make decimal number");
         btn.setBackground(new Color(13, 13, 13));
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Santa Fe LET", Font.PLAIN, 28));
@@ -645,9 +811,10 @@ public class CalculatorGUI {
         });
         keyboardPanel.add(btn);
 
-        button = new JButton();
+        button = new JButton(); // equation sign
         button.setText("=");
         standardButton.add(button);
+        button.setToolTipText("Equal");
         button.setPreferredSize(new Dimension(50, 75));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -787,6 +954,7 @@ public class CalculatorGUI {
         // Text Area
 
         JTextArea display = new JTextArea();
+        display.setToolTipText("Screen of Scientific Calculator");
         display.setEditable(false);
         display.setSize(400, 300);
         display.setFont(new Font("Santa Fe LET", Font.PLAIN, 54));
@@ -794,6 +962,161 @@ public class CalculatorGUI {
         display.setBackground(new Color(31, 31, 31));
         display.setForeground(Color.white);
         display.setLineWrap(true);
+        display.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+                if(e.getKeyChar() == '1' || e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
+                    outputSci += "1";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '2' || e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+                    outputSci += "2";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '3' || e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
+                    outputSci += "3";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '4' || e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
+                    outputSci += "4";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '5' || e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
+                    outputSci += "5";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '6' || e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
+                    outputSci += "6";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '7' || e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
+                    outputSci += "7";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '8' || e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
+                    outputSci += "8";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '9' || e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
+                    outputSci += "9";
+                    display.setText(outputSci);
+                } else if(e.getKeyChar() == '0' || e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
+                    if(!outputSci.equals("0")) {
+                        outputSci += "0";
+                        display.setText(outputSci);
+                    }
+                } else if(e.getKeyChar() == '\b' || e.getExtendedKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    if(outputSci.length()>0) {
+                        outputSci = outputSci.substring(0, outputSci.length()-1);
+                        display.setText(outputSci);
+                    }
+                } else if(e.getKeyChar() == '/' && !firstSci) { // division for keyboard
+
+                    try {
+
+                        firstNumberSci = Double.parseDouble(outputSci);
+                        firstSci = true;
+                        outputSci = "";
+                        display.setText(outputSci);
+                        processSci = Process.DIVISION;
+                        System.out.println(firstNumberSci);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '-' && !firstSci) { // subtraction for keyboard
+
+                    try {
+
+                        firstNumberSci = Double.parseDouble(outputSci);
+                        firstSci = true;
+                        outputSci = "";
+                        display.setText(outputSci);
+                        processSci = Process.SUBTRACT;
+                        System.out.println(firstNumberSci);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '+' && !firstSci) { // summation for keyboard
+
+                    try {
+
+                        firstNumberSci = Double.parseDouble(outputSci);
+                        firstSci = true;
+                        outputSci = "";
+                        display.setText(outputSci);
+                        processSci = Process.SUM;
+                        System.out.println(firstNumberSci);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '*' && !firstSci) { // multiplication for keyboard
+
+                    try {
+
+                        firstNumberSci = Double.parseDouble(outputSci);
+                        firstSci = true;
+                        outputSci = "";
+                        display.setText(outputSci);
+                        processSci = Process.MULTIPLY;
+                        System.out.println(firstNumberSci);
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if((e.getKeyChar() == '=' || e.getKeyChar() == '\n') && firstSci) {
+
+                    try {
+
+                        secondNumberSci = Double.parseDouble(outputSci);
+
+                        if(processSci == Process.SUM) {
+
+                            firstNumberSci = CalculatorFunction.sum(firstNumberSci, secondNumberSci);
+                            outputSci = "" + firstNumberSci;
+                            display.setText(outputSci);
+
+                            firstSci = false;
+
+                        } else if(processSci == Process.SUBTRACT) {
+
+                            firstNumberSci = CalculatorFunction.subtract(firstNumberSci, secondNumberSci);
+                            outputSci = "" + firstNumberSci;
+                            display.setText(outputSci);
+
+                            firstSci = false;
+
+                        } else if(processSci == Process.MULTIPLY) {
+
+                            firstNumberSci = CalculatorFunction.multiply(firstNumberSci, secondNumberSci);
+                            outputSci = "" + firstNumberSci;
+                            display.setText(outputSci);
+
+                            firstSci = false;
+
+                        } else if(processSci == Process.DIVISION) {
+
+                            firstNumberSci = CalculatorFunction.division(firstNumberSci, secondNumberSci);
+                            if((int)firstNumberSci == Integer.MAX_VALUE) {
+                                outputSci = "Error";
+                                display.setText(outputSci);
+                            } else {
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+                            }
+
+                            firstSci = false;
+
+                        }
+
+                    } catch (NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                }
+
+
+            }
+        });
 
 
         JScrollPane scrollPane = new JScrollPane(display);
@@ -808,6 +1131,7 @@ public class CalculatorGUI {
         JButton button = new JButton(); // AC button
         button.setText("AC");
         scientificButton.add(button);
+        button.setToolTipText("Each Left click remove char by char and Each Right click remove all chars");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -850,6 +1174,7 @@ public class CalculatorGUI {
         button = new JButton(); // x power of y
         button.setText("<html><div><p>x<sup>y</sup></p></div></html>");
         scientificButton.add(button);
+        button.setToolTipText("binary operator for power");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -889,6 +1214,7 @@ public class CalculatorGUI {
         button = new JButton(); // sin or cos
         button.setText("<html><div><p>Sin<sub>Cos</sub></p></div></html>");
         scientificButton.add(button);
+        button.setToolTipText("If shift be enable, calculate cos else calculate sin");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -969,6 +1295,7 @@ public class CalculatorGUI {
         button = new JButton(); // tan or cot
         button.setText("<html><div><p>Tan<sub>Cot</sub></p></div></html>");
         scientificButton.add(button);
+        button.setToolTipText("If shift be enabled, calculate cot else calculate tan");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1050,6 +1377,7 @@ public class CalculatorGUI {
         button = new JButton(); // Shift
         button.setText("Shift");
         scientificButton.add(button);
+        button.setToolTipText("This button can change state of some buttons");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1102,6 +1430,7 @@ public class CalculatorGUI {
         button = new JButton(); // square root of number
         button.setText("\u221A");
         scientificButton.add(button);
+        button.setToolTipText("Square root of expected number");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1134,6 +1463,7 @@ public class CalculatorGUI {
         button = new JButton(); // square of number
         button.setText("x\u00B2");
         scientificButton.add(button);
+        button.setToolTipText("Square of expected number");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1166,6 +1496,7 @@ public class CalculatorGUI {
         button = new JButton(); // logarithm of number
         button.setText("<html><div> <p>log2<sub>10</sub></p> </div></html>");
         scientificButton.add(button);
+        button.setToolTipText("If shift be enabled, calculate log in base 10 else calculate log in base 2");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1246,6 +1577,7 @@ public class CalculatorGUI {
         button = new JButton(); // exponential of number
         button.setText("Exp");
         scientificButton.add(button);
+        button.setToolTipText("Exponential of expected number");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1294,6 +1626,7 @@ public class CalculatorGUI {
         button = new JButton(); // Division sign
         button.setText("\u00F7");
         scientificButton.add(button);
+        button.setToolTipText("Division");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1356,6 +1689,7 @@ public class CalculatorGUI {
                 button = new JButton(); // Multiplication sign
                 button.setText("\u00D7");
                 scientificButton.add(button);
+                button.setToolTipText("Multiplication");
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -1416,6 +1750,7 @@ public class CalculatorGUI {
                 button = new JButton(); // negative sign
                 button.setText("-");
                 scientificButton.add(button);
+                button.setToolTipText("Subtraction");
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -1477,6 +1812,7 @@ public class CalculatorGUI {
                 button = new JButton(); // plus sign
                 button.setText("+");
                 scientificButton.add(button);
+                button.setToolTipText("summation");
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -1594,6 +1930,7 @@ public class CalculatorGUI {
                 button = new JButton(); // plus-negative sign
                 button.setText("\u00B1");
                 scientificButton.add(button);
+                button.setToolTipText("Change number sign");
                 button.setPreferredSize(new Dimension(50, 60));
                 button.setBackground(new Color(13, 13, 13));
                 button.setForeground(Color.WHITE);
@@ -1705,6 +2042,7 @@ public class CalculatorGUI {
         button = new JButton(); // factorial
         button.setText("n!");
         scientificButton.add(button);
+        button.setToolTipText("Calculate factorial of expected number");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1749,6 +2087,7 @@ public class CalculatorGUI {
         button = new JButton(); // Random number generator
         button.setText("Rand");
         scientificButton.add(button);
+        button.setToolTipText("Generate a random number");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1803,6 +2142,7 @@ public class CalculatorGUI {
         button = new JButton(); // dot
         button.setText(".");
         scientificButton.add(button);
+        button.setToolTipText("Make decimal number");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
@@ -1838,6 +2178,7 @@ public class CalculatorGUI {
         button = new JButton(); // equal sign
         button.setText("=");
         scientificButton.add(button);
+        button.setToolTipText("Equal");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
