@@ -1,7 +1,9 @@
 import com.sun.org.apache.bcel.internal.generic.CALOAD;
 import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
+import javafx.application.Platform;
 
 import javax.swing.*;
+import javax.swing.Timer;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -11,6 +13,7 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
 
 public class CalculatorGUI {
 
@@ -28,6 +31,7 @@ public class CalculatorGUI {
     private double secondNumberSci;
     private Process processSci = Process.NOTHING;
     private boolean isShift = false;
+    private boolean isRadians;
 
     public CalculatorGUI() {
 
@@ -419,6 +423,75 @@ public class CalculatorGUI {
                             err.printStackTrace();
                         }
 
+                    } else {
+
+                        try {
+
+                            secondNumber = Double.parseDouble(output);
+
+                            if(process == Process.SUM) {
+
+                                firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                                output = "" + firstNumber;
+                                display.setText(output);
+                                display.revalidate();
+                                display.repaint();
+
+
+                                Timer timer = new Timer( 2000, err -> {
+
+                                    output = "";
+                                    display.setText(output);
+
+                                });
+                                timer.setRepeats( false );//make sure the timer only runs once
+                                timer.start();
+
+
+                            } else if(process == Process.SUBTRACT) {
+
+                                firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                                output = "" + firstNumber;
+                                display.setText(output);
+
+
+                            } else if(process == Process.MULTIPLY) {
+
+                                firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                                output = "" + firstNumber;
+                                display.setText(output);
+
+
+                            } else if(process == Process.DIVISION) {
+
+                                firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+
+                                if((int)firstNumber == Integer.MAX_VALUE) {
+                                    output = "Error";
+                                    display.setText(output);
+                                } else {
+                                    output = "" + firstNumber;
+                                    display.setText(output);
+                                    display.revalidate();
+                                    display.repaint();
+
+
+                                    Timer timer = new Timer( 2000, err -> {
+
+                                        output = "";
+                                        display.setText(output);
+
+                                    });
+                                    timer.setRepeats( false );//make sure the timer only runs once
+                                    timer.start();
+                                }
+
+                            }
+
+                        } catch (NumberFormatException err ) {
+                            err.printStackTrace();
+                        }
+
                     }
 
                 }
@@ -482,6 +555,77 @@ public class CalculatorGUI {
                                 }
 
 
+                            } else {
+
+                                try {
+
+                                    secondNumber = Double.parseDouble(output);
+
+                                    if(process == Process.SUM) {
+
+                                        firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+                                        display.revalidate();
+                                        display.repaint();
+
+
+                                        Timer timer = new Timer( 2000, err -> {
+
+                                            output = "";
+                                            display.setText(output);
+
+                                        });
+                                        timer.setRepeats( false );//make sure the timer only runs once
+                                        timer.start();
+
+//                                        first = false;
+
+                                    } else if(process == Process.SUBTRACT) {
+
+                                        firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+
+                                        first = false;
+
+                                    } else if(process == Process.MULTIPLY) {
+
+                                        firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+                                        display.revalidate();
+                                        display.repaint();
+
+
+                                        Timer timer = new Timer( 2000, err -> {
+
+                                            output = "";
+                                            display.setText(output);
+
+                                        });
+                                        timer.setRepeats( false );//make sure the timer only runs once
+                                        timer.start();
+
+                                    } else if(process == Process.DIVISION) {
+
+                                        firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                                        if((int)firstNumber == Integer.MAX_VALUE) {
+                                            output = "Error";
+                                            display.setText(output);
+                                        } else {
+                                            output = "" + firstNumber;
+                                            display.setText(output);
+                                        }
+
+                                        first = false;
+
+                                    }
+
+                                } catch (NumberFormatException err ) {
+                                    err.printStackTrace();
+                                }
+
                             }
 
                         }
@@ -541,6 +685,87 @@ public class CalculatorGUI {
                                     err.printStackTrace();
                                 }
 
+
+                            } else {
+
+                                try {
+
+                                    secondNumber = Double.parseDouble(output);
+
+                                    if(process == Process.SUM) {
+
+                                        firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+                                        display.revalidate();
+                                        display.repaint();
+
+
+                                        Timer timer = new Timer( 2000, err -> {
+
+                                            output = "";
+                                            display.setText(output);
+
+                                        });
+                                        timer.setRepeats( false );//make sure the timer only runs once
+                                        timer.start();
+
+//                                        first = false;
+
+                                    } else if(process == Process.SUBTRACT) {
+
+                                        firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+                                        display.revalidate();
+                                        display.repaint();
+
+
+                                        Timer timer = new Timer( 2000, err -> {
+
+                                            output = "";
+                                            display.setText(output);
+
+                                        });
+                                        timer.setRepeats( false );//make sure the timer only runs once
+                                        timer.start();
+
+                                    } else if(process == Process.MULTIPLY) {
+
+                                        firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+                                        display.revalidate();
+                                        display.repaint();
+
+
+                                        Timer timer = new Timer( 2000, err -> {
+
+                                            output = "";
+                                            display.setText(output);
+
+                                        });
+                                        timer.setRepeats( false );//make sure the timer only runs once
+                                        timer.start();
+
+                                    } else if(process == Process.DIVISION) {
+
+                                        firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                                        if((int)firstNumber == Integer.MAX_VALUE) {
+                                            output = "Error";
+                                            display.setText(output);
+                                        } else {
+                                            output = "" + firstNumber;
+                                            display.setText(output);
+                                        }
+
+                                        first = false;
+
+                                    }
+
+                                } catch (NumberFormatException err ) {
+                                    err.printStackTrace();
+                                }
 
                             }
 
@@ -602,6 +827,67 @@ public class CalculatorGUI {
                                     err.printStackTrace();
                                 }
 
+
+                            } else {
+
+                                try {
+
+                                    secondNumber = Double.parseDouble(output);
+
+                                    if(process == Process.SUM) {
+
+                                        firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+                                        display.revalidate();
+                                        display.repaint();
+
+
+                                        Timer timer = new Timer( 2000, err -> {
+
+                                            output = "";
+                                            display.setText(output);
+
+                                    });
+                                        timer.setRepeats( false );//make sure the timer only runs once
+                                        timer.start();
+
+//                                        first = false;
+
+                                    } else if(process == Process.SUBTRACT) {
+
+                                        firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+
+                                        first = false;
+
+                                    } else if(process == Process.MULTIPLY) {
+
+                                        firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                                        output = "" + firstNumber;
+                                        display.setText(output);
+
+                                        first = false;
+
+                                    } else if(process == Process.DIVISION) {
+
+                                        firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                                        if((int)firstNumber == Integer.MAX_VALUE) {
+                                            output = "Error";
+                                            display.setText(output);
+                                        } else {
+                                            output = "" + firstNumber;
+                                            display.setText(output);
+                                        }
+
+                                        first = false;
+
+                                    }
+
+                                } catch (NumberFormatException err ) {
+                                    err.printStackTrace();
+                                }
 
                             }
 
@@ -1233,7 +1519,15 @@ public class CalculatorGUI {
                         try {
 
                             secondNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + Math.cos(secondNumberSci);
+                            if(isRadians){
+
+                                outputSci = "" + Math.cos(secondNumberSci);
+
+                            } else {
+
+                                outputSci = "" + Math.cos(Math.toDegrees(secondNumberSci));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1247,7 +1541,15 @@ public class CalculatorGUI {
                         try {
 
                             secondNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + Math.sin(secondNumberSci);
+                            if(isRadians) {
+
+                                outputSci = "" + Math.sin(secondNumberSci);
+
+                            } else {
+
+                                outputSci = "" + Math.sin(Math.toDegrees(secondNumberSci));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1261,7 +1563,15 @@ public class CalculatorGUI {
                         try {
 
                             firstNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + Math.cos(firstNumberSci);
+                            if(isRadians) {
+
+                                outputSci = "" + Math.cos(firstNumberSci);
+
+                            } else {
+
+                                outputSci = "" + Math.cos(Math.toDegrees(firstNumberSci));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1275,7 +1585,15 @@ public class CalculatorGUI {
                         try {
 
                             firstNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + Math.sin(firstNumberSci);
+                            if(isRadians) {
+
+                                outputSci = "" + Math.sin(firstNumberSci);
+
+                            } else {
+
+                                outputSci = "" + Math.sin(Math.toDegrees(firstNumberSci));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1314,7 +1632,15 @@ public class CalculatorGUI {
                         try {
 
                             secondNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + (1/Math.tan(secondNumberSci));
+                            if(isRadians) {
+
+                                outputSci = "" + (1/Math.tan(secondNumberSci));
+
+                            } else {
+
+                                outputSci = "" + (1/Math.tan(Math.toDegrees(secondNumberSci)));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1328,7 +1654,15 @@ public class CalculatorGUI {
                         try {
 
                             secondNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + Math.tan(secondNumberSci);
+                            if(isRadians) {
+
+                                outputSci = "" + Math.tan(secondNumberSci);
+
+                            } else {
+
+                                outputSci = "" + Math.tan(Math.toDegrees(secondNumberSci));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1342,7 +1676,15 @@ public class CalculatorGUI {
                         try {
 
                             firstNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + (1/Math.tan(firstNumberSci));
+                            if(isRadians) {
+
+                                outputSci = "" + (1/Math.tan(firstNumberSci));
+
+                            } else {
+
+                                outputSci = "" + (1/Math.tan(Math.toDegrees(firstNumberSci)));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1356,7 +1698,15 @@ public class CalculatorGUI {
                         try {
 
                             firstNumberSci = Double.parseDouble(outputSci);
-                            outputSci = "" + Math.tan(firstNumberSci);
+                            if(isRadians) {
+
+                                outputSci = "" + Math.tan(firstNumberSci);
+
+                            } else {
+
+                                outputSci = "" + Math.tan(Math.toDegrees(firstNumberSci));
+
+                            }
                             display.setText(outputSci);
 
                         } catch (NumberFormatException err) {
@@ -1656,6 +2006,32 @@ public class CalculatorGUI {
                             err.printStackTrace();
                         }
 
+                    } else {
+
+                        secondNumberSci = Double.parseDouble(outputSci);
+
+                        firstNumberSci = CalculatorFunction.division(firstNumberSci, secondNumberSci);
+                        if(firstNumberSci == Integer.MAX_VALUE) {
+
+                            outputSci = "ERROR";
+                            display.setText(outputSci);
+
+                        } else {
+
+                            outputSci = "" + firstNumberSci;
+                            display.setText(outputSci);
+
+                            Timer timer = new Timer( 2000, ee -> {
+
+                                outputSci = "";
+                                display.setText(outputSci);
+
+                            } );
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+                        }
+
                     }
 
                 }
@@ -1719,6 +2095,23 @@ public class CalculatorGUI {
                                     err.printStackTrace();
                                 }
 
+                            } else {
+
+                                secondNumberSci = Double.parseDouble(outputSci);
+
+                                firstNumberSci = CalculatorFunction.multiply(firstNumberSci, secondNumberSci);
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                Timer timer = new Timer( 2000, ee -> {
+
+                                    outputSci = "";
+                                    display.setText(outputSci);
+
+                                } );
+                                timer.setRepeats( false );//make sure the timer only runs once
+                                timer.start();
+
                             }
 
                         }
@@ -1781,6 +2174,23 @@ public class CalculatorGUI {
                                 }
 
 
+                            } else {
+
+                                secondNumberSci = Double.parseDouble(outputSci);
+
+                                firstNumberSci = CalculatorFunction.subtract(firstNumberSci, secondNumberSci);
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                Timer timer = new Timer( 2000, ee -> {
+
+                                    outputSci = "";
+                                    display.setText(outputSci);
+
+                                } );
+                                timer.setRepeats( false );//make sure the timer only runs once
+                                timer.start();
+
                             }
 
                         }
@@ -1842,6 +2252,23 @@ public class CalculatorGUI {
                                     err.printStackTrace();
                                 }
 
+
+                            } else {
+
+                                secondNumberSci = Double.parseDouble(outputSci);
+
+                                firstNumberSci = CalculatorFunction.sum(firstNumberSci, secondNumberSci);
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                Timer timer = new Timer( 2000, ee -> {
+
+                                    outputSci = "";
+                                    display.setText(outputSci);
+
+                                } );
+                                timer.setRepeats( false );//make sure the timer only runs once
+                                timer.start();
 
                             }
 
@@ -2085,25 +2512,42 @@ public class CalculatorGUI {
         keyboardPanel.add(button);
 
         button = new JButton(); // Random number generator
-        button.setText("Rand");
+        button.setText("<html><p>DEG<sub>Rad</sub></p></html>");
         scientificButton.add(button);
-        button.setToolTipText("Generate a random number");
+        button.setToolTipText("if shift be ON is Radian else will be Degree");
         button.setPreferredSize(new Dimension(50, 60));
         button.setBackground(new Color(13, 13, 13));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 20));
+        button.setFont(new Font("Santa Fe LET", Font.PLAIN, 16));
         button.setContentAreaFilled(false);
         button.setOpaque(true);
         button.setBorder(BorderFactory.createLineBorder(new Color(31, 31,31), 1));
+
+        final JButton finalButton = button;
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
                 if(e.getButton() == MouseEvent.BUTTON1) {
 
-                    outputSci = "" + Math.random();
-                    display.setText(outputSci);
+                    isRadians = !isRadians;
 
+                }
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+                finalButton.setBackground(Color.red);
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+                if(!isRadians) {
+                    finalButton.setBackground(new Color(13, 13, 13));
                 }
 
             }
