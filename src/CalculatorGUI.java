@@ -169,6 +169,75 @@ public class CalculatorGUI {
                         err.printStackTrace();
                     }
 
+                } else if(e.getKeyChar() == '/' && first) {
+
+                    try {
+
+                        secondNumber = Double.parseDouble(output);
+
+                        if(process == Process.SUM) {
+
+                            firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+                            display.revalidate();
+                            display.repaint();
+
+
+                            Timer timer = new Timer( 2000, err -> {
+
+                                output = "";
+                                display.setText(output);
+
+                            });
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+
+                        } else if(process == Process.SUBTRACT) {
+
+                            firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+
+                        } else if(process == Process.MULTIPLY) {
+
+                            firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+
+                        } else if(process == Process.DIVISION) {
+
+                            firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+
+                            if((int)firstNumber == Integer.MAX_VALUE) {
+                                output = "Error";
+                                display.setText(output);
+                            } else {
+                                output = "" + firstNumber;
+                                display.setText(output);
+                                display.revalidate();
+                                display.repaint();
+
+
+                                Timer timer = new Timer( 2000, err -> {
+
+                                    output = "";
+                                    display.setText(output);
+
+                                });
+                                timer.setRepeats( false );//make sure the timer only runs once
+                                timer.start();
+                            }
+
+                        }
+
+                    } catch (NumberFormatException err ) {
+                        err.printStackTrace();
+                    }
+
                 } else if(e.getKeyChar() == '-' && !first) { // subtraction for keyboard
 
                     try {
@@ -181,6 +250,87 @@ public class CalculatorGUI {
                         System.out.println(firstNumber);
 
                     } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '-' && first) {
+
+                    try {
+
+                        secondNumber = Double.parseDouble(output);
+
+                        if(process == Process.SUM) {
+
+                            firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+                            display.revalidate();
+                            display.repaint();
+
+
+                            Timer timer = new Timer( 2000, err -> {
+
+                                output = "";
+                                display.setText(output);
+
+                            });
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+//                                        first = false;
+
+                        } else if(process == Process.SUBTRACT) {
+
+                            firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+                            display.revalidate();
+                            display.repaint();
+
+
+                            Timer timer = new Timer( 2000, err -> {
+
+                                output = "";
+                                display.setText(output);
+
+                            });
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+                        } else if(process == Process.MULTIPLY) {
+
+                            firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+                            display.revalidate();
+                            display.repaint();
+
+
+                            Timer timer = new Timer( 2000, err -> {
+
+                                output = "";
+                                display.setText(output);
+
+                            });
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+                        } else if(process == Process.DIVISION) {
+
+                            firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                            if((int)firstNumber == Integer.MAX_VALUE) {
+                                output = "Error";
+                                display.setText(output);
+                            } else {
+                                output = "" + firstNumber;
+                                display.setText(output);
+                            }
+
+                            first = false;
+
+                        }
+
+                    } catch (NumberFormatException err ) {
                         err.printStackTrace();
                     }
 
@@ -199,6 +349,67 @@ public class CalculatorGUI {
                         err.printStackTrace();
                     }
 
+                } else if(e.getKeyChar() == '+' && first) {
+
+                    try {
+
+                        secondNumber = Double.parseDouble(output);
+
+                        if(process == Process.SUM) {
+
+                            firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+                            display.revalidate();
+                            display.repaint();
+
+
+                            Timer timer = new Timer( 2000, err -> {
+
+                                output = "";
+                                display.setText(output);
+
+                            });
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+//                                        first = false;
+
+                        } else if(process == Process.SUBTRACT) {
+
+                            firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+                            first = false;
+
+                        } else if(process == Process.MULTIPLY) {
+
+                            firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+                            first = false;
+
+                        } else if(process == Process.DIVISION) {
+
+                            firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                            if((int)firstNumber == Integer.MAX_VALUE) {
+                                output = "Error";
+                                display.setText(output);
+                            } else {
+                                output = "" + firstNumber;
+                                display.setText(output);
+                            }
+
+                            first = false;
+
+                        }
+
+                    } catch (NumberFormatException err ) {
+                        err.printStackTrace();
+                    }
+
                 } else if(e.getKeyChar() == '*' && !first) { // multiplication for keyboard
 
                     try {
@@ -214,7 +425,79 @@ public class CalculatorGUI {
                         err.printStackTrace();
                     }
 
-                } else if((e.getKeyChar() == '=' || e.getKeyChar() == '\n') && first) {
+                } else if(e.getKeyChar() == '*' && first) {
+
+                    try {
+
+                        secondNumber = Double.parseDouble(output);
+
+                        if(process == Process.SUM) {
+
+                            firstNumber = CalculatorFunction.sum(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+                            display.revalidate();
+                            display.repaint();
+
+
+                            Timer timer = new Timer( 2000, err -> {
+
+                                output = "";
+                                display.setText(output);
+
+                            });
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+//                                        first = false;
+
+                        } else if(process == Process.SUBTRACT) {
+
+                            firstNumber = CalculatorFunction.subtract(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+
+                            first = false;
+
+                        } else if(process == Process.MULTIPLY) {
+
+                            firstNumber = CalculatorFunction.multiply(firstNumber, secondNumber);
+                            output = "" + firstNumber;
+                            display.setText(output);
+                            display.revalidate();
+                            display.repaint();
+
+
+                            Timer timer = new Timer( 2000, err -> {
+
+                                output = "";
+                                display.setText(output);
+
+                            });
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+                        } else if(process == Process.DIVISION) {
+
+                            firstNumber = CalculatorFunction.division(firstNumber, secondNumber);
+                            if((int)firstNumber == Integer.MAX_VALUE) {
+                                output = "Error";
+                                display.setText(output);
+                            } else {
+                                output = "" + firstNumber;
+                                display.setText(output);
+                            }
+
+                            first = false;
+
+                        }
+
+                    } catch (NumberFormatException err ) {
+                        err.printStackTrace();
+                    }
+
+                }
+                else if((e.getKeyChar() == '=' || e.getKeyChar() == '\n') && first) {
 
                     try {
 
@@ -1304,6 +1587,38 @@ public class CalculatorGUI {
                         err.printStackTrace();
                     }
 
+                } else if(e.getKeyChar() == '/' && firstSci) {
+
+                    try {
+
+                        secondNumberSci = Double.parseDouble(outputSci);
+
+                        firstNumberSci = CalculatorFunction.division(firstNumberSci, secondNumberSci);
+                        if(firstNumberSci == Integer.MAX_VALUE) {
+
+                            outputSci = "ERROR";
+                            display.setText(outputSci);
+
+                        } else {
+
+                            outputSci = "" + firstNumberSci;
+                            display.setText(outputSci);
+
+                            Timer timer = new Timer( 2000, ee -> {
+
+                                outputSci = "";
+                                display.setText(outputSci);
+
+                            } );
+                            timer.setRepeats( false );//make sure the timer only runs once
+                            timer.start();
+
+                        }
+
+                    } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
                 } else if(e.getKeyChar() == '-' && !firstSci) { // subtraction for keyboard
 
                     try {
@@ -1316,6 +1631,29 @@ public class CalculatorGUI {
                         System.out.println(firstNumberSci);
 
                     } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '-' && firstSci) {
+
+                    try {
+
+                        secondNumberSci = Double.parseDouble(outputSci);
+
+                        firstNumberSci = CalculatorFunction.subtract(firstNumberSci, secondNumberSci);
+                        outputSci = "" + firstNumberSci;
+                        display.setText(outputSci);
+
+                        Timer timer = new Timer( 2000, ee -> {
+
+                            outputSci = "";
+                            display.setText(outputSci);
+
+                        } );
+                        timer.setRepeats( false );//make sure the timer only runs once
+                        timer.start();
+
+                    } catch (NumberFormatException err) {
                         err.printStackTrace();
                     }
 
@@ -1334,6 +1672,29 @@ public class CalculatorGUI {
                         err.printStackTrace();
                     }
 
+                } else if(e.getKeyChar() == '+' && firstSci) {
+
+                    try {
+
+                        secondNumberSci = Double.parseDouble(outputSci);
+
+                        firstNumberSci = CalculatorFunction.sum(firstNumberSci, secondNumberSci);
+                        outputSci = "" + firstNumberSci;
+                        display.setText(outputSci);
+
+                        Timer timer = new Timer( 2000, ee -> {
+
+                            outputSci = "";
+                            display.setText(outputSci);
+
+                        } );
+                        timer.setRepeats( false );//make sure the timer only runs once
+                        timer.start();
+
+                    }catch (NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
                 } else if(e.getKeyChar() == '*' && !firstSci) { // multiplication for keyboard
 
                     try {
@@ -1346,6 +1707,29 @@ public class CalculatorGUI {
                         System.out.println(firstNumberSci);
 
                     } catch(NumberFormatException err) {
+                        err.printStackTrace();
+                    }
+
+                } else if(e.getKeyChar() == '*' && firstSci) {
+
+                    try {
+
+                        secondNumberSci = Double.parseDouble(outputSci);
+
+                        firstNumberSci = CalculatorFunction.multiply(firstNumberSci, secondNumberSci);
+                        outputSci = "" + firstNumberSci;
+                        display.setText(outputSci);
+
+                        Timer timer = new Timer( 2000, ee -> {
+
+                            outputSci = "";
+                            display.setText(outputSci);
+
+                        } );
+                        timer.setRepeats( false );//make sure the timer only runs once
+                        timer.start();
+
+                    }catch (NumberFormatException err) {
                         err.printStackTrace();
                     }
 
@@ -2008,28 +2392,34 @@ public class CalculatorGUI {
 
                     } else {
 
-                        secondNumberSci = Double.parseDouble(outputSci);
+                        try {
 
-                        firstNumberSci = CalculatorFunction.division(firstNumberSci, secondNumberSci);
-                        if(firstNumberSci == Integer.MAX_VALUE) {
+                            secondNumberSci = Double.parseDouble(outputSci);
 
-                            outputSci = "ERROR";
-                            display.setText(outputSci);
+                            firstNumberSci = CalculatorFunction.division(firstNumberSci, secondNumberSci);
+                            if(firstNumberSci == Integer.MAX_VALUE) {
 
-                        } else {
-
-                            outputSci = "" + firstNumberSci;
-                            display.setText(outputSci);
-
-                            Timer timer = new Timer( 2000, ee -> {
-
-                                outputSci = "";
+                                outputSci = "ERROR";
                                 display.setText(outputSci);
 
-                            } );
-                            timer.setRepeats( false );//make sure the timer only runs once
-                            timer.start();
+                            } else {
 
+                                outputSci = "" + firstNumberSci;
+                                display.setText(outputSci);
+
+                                Timer timer = new Timer( 2000, ee -> {
+
+                                    outputSci = "";
+                                    display.setText(outputSci);
+
+                                } );
+                                timer.setRepeats( false );//make sure the timer only runs once
+                                timer.start();
+
+                            }
+
+                        } catch(NumberFormatException err) {
+                            err.printStackTrace();
                         }
 
                     }
@@ -2097,20 +2487,26 @@ public class CalculatorGUI {
 
                             } else {
 
-                                secondNumberSci = Double.parseDouble(outputSci);
+                                try {
 
-                                firstNumberSci = CalculatorFunction.multiply(firstNumberSci, secondNumberSci);
-                                outputSci = "" + firstNumberSci;
-                                display.setText(outputSci);
+                                    secondNumberSci = Double.parseDouble(outputSci);
 
-                                Timer timer = new Timer( 2000, ee -> {
-
-                                    outputSci = "";
+                                    firstNumberSci = CalculatorFunction.multiply(firstNumberSci, secondNumberSci);
+                                    outputSci = "" + firstNumberSci;
                                     display.setText(outputSci);
 
-                                } );
-                                timer.setRepeats( false );//make sure the timer only runs once
-                                timer.start();
+                                    Timer timer = new Timer( 2000, ee -> {
+
+                                        outputSci = "";
+                                        display.setText(outputSci);
+
+                                    } );
+                                    timer.setRepeats( false );//make sure the timer only runs once
+                                    timer.start();
+
+                                }catch (NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
 
                             }
 
@@ -2176,20 +2572,26 @@ public class CalculatorGUI {
 
                             } else {
 
-                                secondNumberSci = Double.parseDouble(outputSci);
+                                try {
 
-                                firstNumberSci = CalculatorFunction.subtract(firstNumberSci, secondNumberSci);
-                                outputSci = "" + firstNumberSci;
-                                display.setText(outputSci);
+                                    secondNumberSci = Double.parseDouble(outputSci);
 
-                                Timer timer = new Timer( 2000, ee -> {
-
-                                    outputSci = "";
+                                    firstNumberSci = CalculatorFunction.subtract(firstNumberSci, secondNumberSci);
+                                    outputSci = "" + firstNumberSci;
                                     display.setText(outputSci);
 
-                                } );
-                                timer.setRepeats( false );//make sure the timer only runs once
-                                timer.start();
+                                    Timer timer = new Timer( 2000, ee -> {
+
+                                        outputSci = "";
+                                        display.setText(outputSci);
+
+                                    } );
+                                    timer.setRepeats( false );//make sure the timer only runs once
+                                    timer.start();
+
+                                } catch (NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
 
                             }
 
@@ -2255,20 +2657,26 @@ public class CalculatorGUI {
 
                             } else {
 
-                                secondNumberSci = Double.parseDouble(outputSci);
+                                try {
 
-                                firstNumberSci = CalculatorFunction.sum(firstNumberSci, secondNumberSci);
-                                outputSci = "" + firstNumberSci;
-                                display.setText(outputSci);
+                                    secondNumberSci = Double.parseDouble(outputSci);
 
-                                Timer timer = new Timer( 2000, ee -> {
-
-                                    outputSci = "";
+                                    firstNumberSci = CalculatorFunction.sum(firstNumberSci, secondNumberSci);
+                                    outputSci = "" + firstNumberSci;
                                     display.setText(outputSci);
 
-                                } );
-                                timer.setRepeats( false );//make sure the timer only runs once
-                                timer.start();
+                                    Timer timer = new Timer( 2000, ee -> {
+
+                                        outputSci = "";
+                                        display.setText(outputSci);
+
+                                    } );
+                                    timer.setRepeats( false );//make sure the timer only runs once
+                                    timer.start();
+
+                                }catch (NumberFormatException err) {
+                                    err.printStackTrace();
+                                }
 
                             }
 
